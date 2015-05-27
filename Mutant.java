@@ -7,12 +7,13 @@ class Mutant {
     Mutant(){
     }
     public static void main(String[] args){
-      String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
+      String[] dna = {"ATGCGACAGTGC", "CAGTGCCAGTGC", "TTATGTCCCCTA", "AGAAGGCCCCTA", "CCCCTACCCCTA", "TCACTGCCCCTA"};
       Mutant mutant = new Mutant();
       mutant.isMutant(dna);
     }
     private boolean isMutant(String[] dna){
         ArrayList<char[]> array = new ArrayList<>();
+        ArrayList<char[]> helper = new ArrayList<>();
 
         int len;
         int max_width = 0;
@@ -20,6 +21,7 @@ class Mutant {
         counter = 0;
         dna_len = 4;
         max_height = dna.length;
+        char[] vertical = new char[max_height];
 
         //first convert to char[] and get max_length
         for (String i: dna){
@@ -31,8 +33,9 @@ class Mutant {
             }
         }
 
+
         //fill the matrix
-        char[][] matrix = new char[max_width][max_height];
+        char[][] matrix = new char[max_height][max_width];
         for(int i=0; i<max_height; i++){
             char[] tmp = array.get(i);
             check_horizontal(tmp);
@@ -47,6 +50,28 @@ class Mutant {
     }
 
     private void check_horizontal(char[] item){
+        int l = item.length;
+        char flag;
+        if(l < dna_len){
+            return;
+        }
+
+        for(int i=0; i<l-dna_len+1; i++){
+            flag = item[i];
+            for(int j=i+dna_len-1; j>i; j--){
+                if(flag != item[j]){
+                    break;
+                }else if(j>i+1){
+                  continue;
+                }
+                counter++;
+                i += dna_len -1;
+            }
+        }
+    }
+
+    
+    private void check_vertical(char[] item){
         int l = item.length;
         char flag;
         if(l < dna_len){
