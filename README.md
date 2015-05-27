@@ -21,5 +21,6 @@ https://rocky-hamlet-9109.herokuapp.com/ismutant
 
 ###Curl example
 ```
-  curl -X POST -H "Content-Type: text/json" -H "Cache-Control: no-cache" -d '{"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}' https://rocky-hamlet-9109.herokuapp.com/ismutant
+  curl -X POST -H "Content-Type: text/json" -H "Cache-Control: no-cache" -d \
+  '{"dna":["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]}' https://rocky-hamlet-9109.herokuapp.com/ismutant
 ```
