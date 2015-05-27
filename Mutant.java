@@ -8,7 +8,7 @@ class Mutant {
     }
 
     public static void main(String[] args){
-        String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
+        String[] dna = {"ATGCGM", "CAGTMC", "TTAMGT", "AGMAGG", "CCCCTA", "TCACTG", "ADF"};
         Mutant mutant = new Mutant();
         mutant.isMutant(dna);
     }
@@ -71,41 +71,75 @@ class Mutant {
             }
         }
 
+       
+        int rest;
+        int len_items;
+        
         //iterate in diagonal top-left to bottom-right (\)
-        char[] tmp = new char[dna_len];
-        for(int i=0; i <= max_width - dna_len; i++){
-            for(int j=0; j <= max_height - dna_len; j++){
+        for(int i=0; i<=max_height - dna_len; i++){
+            rest = max_height - i;
+            len_items = (rest < max_width) ? rest : max_width;
+            char[] tmp = new char[len_items];
 
-                //create diagonal array
-                for(int k=0; k<dna_len; k++){
-                    tmp[k] = matrix[i+k][j+k];
-                }
+            for(int j=0; j<len_items; j++){
+                tmp[j] = matrix[j+i][j];
+            }
 
-                check_horizontal(tmp);
-
-                if(counter > 1){
-                    System.out.println(counter);
-                    return true;
-                }
-            } 
+            check_horizontal(tmp);
         }
 
+        //iterate after the center
+        for(int i=1; i<=max_width - dna_len; i++){
+            rest = max_width - i;
+            len_items = (rest < max_height) ? rest : max_height;
+            char[] tmp = new char[len_items];
+
+            for(int j=0; j<len_items; j++){
+                tmp[j] = matrix[j][j+i];
+            }
+
+            check_horizontal(tmp);
+            if(counter > 1){
+                System.out.println(counter);
+                return true;
+            }
+        }
+
+
         //iterate in diagonal bottom-left to top-right (/)
-        for(int i=0; i <= max_width - dna_len; i++){
-            for(int j=max_height-1; j >= dna_len-1; j--){
+        for(int i=max_height-1; i >= dna_len-1; i--){
+            rest = i+1;
+            len_items = (rest < max_width) ? rest : max_width;
+            char[] tmp = new char[len_items];
 
-                //create diagonal array
-                for(int k=0; k<dna_len; k++){
-                    tmp[k] = matrix[i+k][j-k];
-                }
 
-                check_horizontal(tmp);
+            for(int j=0; j<len_items; j++){
+                tmp[j] = matrix[i-j][j];
+            }
 
-                if(counter > 1){
-                    System.out.println(counter);
-                    return true;
-                }
-            } 
+            check_horizontal(tmp);
+            if(counter > 1){
+                System.out.println(counter);
+                return true;
+            }
+        }
+        
+
+        //iterate after the center
+        for(int i=1; i<=max_width - dna_len; i++){
+            rest = max_width - i;
+            len_items = (rest < max_height) ? rest : max_height;
+            char[] tmp = new char[len_items];
+
+            for(int j=0; j<len_items; j++){
+                tmp[j] = matrix[max_width-1-j][j+i];
+            }
+
+            check_horizontal(tmp);
+            if(counter > 1){
+                System.out.println(counter);
+                return true;
+            }
         }
 
         System.out.println(counter);
@@ -134,6 +168,7 @@ class Mutant {
                 }
 
                 counter++;
+                
                 if(counter > 1){
                     return;
                 }
