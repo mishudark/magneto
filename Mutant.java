@@ -6,11 +6,13 @@ class Mutant {
 
     Mutant(){
     }
+
     public static void main(String[] args){
-      String[] dna = {"ATGCGACAGTGC", "CAGTGCCAGTGC", "TTATGTCCCCTA", "AGAAGGCCCCTA", "CCCCTACCCCTA", "TCACTGCCCCTA"};
+      String[] dna = {"ATGCGA", "CAGTGC", "TTATGA", "AGAAGG", "CCCCTA", "TCACTG"};
       Mutant mutant = new Mutant();
       mutant.isMutant(dna);
     }
+
     private boolean isMutant(String[] dna){
         ArrayList<char[]> array = new ArrayList<>();
         ArrayList<char[]> helper = new ArrayList<>();
@@ -38,11 +40,30 @@ class Mutant {
         char[][] matrix = new char[max_height][max_width];
         for(int i=0; i<max_height; i++){
             char[] tmp = array.get(i);
+            //check for horizontal cases
             check_horizontal(tmp);
+            System.out.println(counter);
+            if(counter > 1){
+              return true;
+            }
 
             for(int j=0; j<max_width; j++){
                 matrix[i][j] = tmp[j];
             }
+        }
+
+        //iterate vertical and check
+        for(int j=0; j<max_width; j++){
+          char[] tmp = new char[max_height];
+          for(int i=0; i<max_height; i++){
+            tmp[i] = matrix[i][j];
+          }
+
+          check_horizontal(tmp);
+
+          if(counter > 1){
+            return true;
+          }
         }
 
         System.out.println(counter);
@@ -52,48 +73,27 @@ class Mutant {
     private void check_horizontal(char[] item){
         int l = item.length;
         char flag;
+
         if(l < dna_len){
             return;
         }
 
         for(int i=0; i<l-dna_len+1; i++){
             flag = item[i];
+            //check first and last elements, iterate 
             for(int j=i+dna_len-1; j>i; j--){
                 if(flag != item[j]){
                     break;
                 }else if(j>i+1){
                   continue;
                 }
+
                 counter++;
-                i += dna_len -1;
-            }
-        }
-    }
 
-    
-    private void check_vertical(char[] item){
-        int l = item.length;
-        char flag;
-        if(l < dna_len){
-            return;
-        }
-
-        for(int i=0; i<l-dna_len+1; i++){
-            flag = item[i];
-            System.out.println("========flag======");
-            System.out.println(flag);
-            System.out.println("-----------------");
-            for(int j=i+dna_len-1; j>i; j--){
-                System.out.println(item[j]);
-                if(flag != item[j]){
-                    break;
-                }else if(j>i+1){
-                  continue;
+                if(counter > 1){
+                  return;
                 }
-                System.out.println("*******************");
-                System.out.println(flag);
-                System.out.println("*******************");
-                counter++;
+
                 i += dna_len -1;
             }
         }
