@@ -8,14 +8,13 @@ class Mutant {
     }
 
     public static void main(String[] args){
-      String[] dna = {"ATGCGA", "CAGTGC", "TTATGA", "AGAAGG", "CCCCTA", "TCACTG"};
-      Mutant mutant = new Mutant();
-      mutant.isMutant(dna);
+        String[] dna = {"ATGCG", "CAGTGC", "TTATGA", "AGAAGG", "CCCCTA", "TCACTG"};
+        Mutant mutant = new Mutant();
+        mutant.isMutant(dna);
     }
 
     private boolean isMutant(String[] dna){
         ArrayList<char[]> array = new ArrayList<>();
-        ArrayList<char[]> helper = new ArrayList<>();
 
         int len;
         int max_width = 0;
@@ -40,30 +39,36 @@ class Mutant {
         char[][] matrix = new char[max_height][max_width];
         for(int i=0; i<max_height; i++){
             char[] tmp = array.get(i);
+
             //check for horizontal cases
             check_horizontal(tmp);
-            System.out.println(counter);
             if(counter > 1){
-              return true;
+                System.out.println(counter);
+                return true;
             }
 
+            int tmp_len = tmp.length;
             for(int j=0; j<max_width; j++){
-                matrix[i][j] = tmp[j];
+                //ensure index, and set empty in other case
+                char elem = (j < tmp_len) ? tmp[j] : 0;
+
+                matrix[i][j] = elem;
             }
         }
 
         //iterate vertical and check
         for(int j=0; j<max_width; j++){
-          char[] tmp = new char[max_height];
-          for(int i=0; i<max_height; i++){
-            tmp[i] = matrix[i][j];
-          }
+            char[] tmp = new char[max_height];
+            for(int i=0; i<max_height; i++){
+                tmp[i] = matrix[i][j];
+            }
 
-          check_horizontal(tmp);
+            check_horizontal(tmp);
 
-          if(counter > 1){
-            return true;
-          }
+            if(counter > 1){
+                System.out.println(counter);
+                return true;
+            }
         }
 
         System.out.println(counter);
@@ -80,24 +85,25 @@ class Mutant {
 
         for(int i=0; i<l-dna_len+1; i++){
             flag = item[i];
+
             //check first and last elements, iterate 
             for(int j=i+dna_len-1; j>i; j--){
                 if(flag != item[j]){
                     break;
-                }else if(j>i+1){
-                  continue;
+                }
+
+                if(j > i+1){
+                    continue;
                 }
 
                 counter++;
-
                 if(counter > 1){
-                  return;
+                    return;
                 }
 
                 i += dna_len -1;
             }
         }
     }
-
 }
 
