@@ -8,7 +8,7 @@ class Mutant {
     }
 
     public static void main(String[] args){
-        String[] dna = {"000M0", "00M000", "0M0000", "M00000", "000000", "000000"};
+        String[] dna = {"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"};
         Mutant mutant = new Mutant();
         mutant.isMutant(dna);
     }
@@ -75,23 +75,36 @@ class Mutant {
         char[] tmp = new char[dna_len];
         for(int i=0; i <= max_width - dna_len; i++){
             for(int j=0; j <= max_height - dna_len; j++){
+
                 //create diagonal array
                 for(int k=0; k<dna_len; k++){
                     tmp[k] = matrix[i+k][j+k];
                 }
+
                 check_horizontal(tmp);
+
+                if(counter > 1){
+                    System.out.println(counter);
+                    return true;
+                }
             } 
         }
 
         //iterate in diagonal bottom-left to top-right (/)
         for(int i=0; i <= max_width - dna_len; i++){
             for(int j=max_height-1; j >= dna_len-1; j--){
-                //create diagonal array
 
+                //create diagonal array
                 for(int k=0; k<dna_len; k++){
                     tmp[k] = matrix[i+k][j-k];
                 }
+
                 check_horizontal(tmp);
+
+                if(counter > 1){
+                    System.out.println(counter);
+                    return true;
+                }
             } 
         }
 
@@ -110,7 +123,7 @@ class Mutant {
         for(int i=0; i<l-dna_len+1; i++){
             flag = item[i];
 
-            //check first and last elements, iterate 
+            //check first and last elements inside the window(dna_len)
             for(int j=i+dna_len-1; j>i; j--){
                 if(flag != item[j]){
                     break;
