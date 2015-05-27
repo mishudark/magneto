@@ -8,7 +8,7 @@ class Mutant {
     }
 
     public static void main(String[] args){
-        String[] dna = {"ATGCG", "CAGTGC", "TTATGA", "AGAAGG", "CCCCTA", "TCACTG"};
+        String[] dna = {"000M0", "00M000", "0M0000", "M00000", "000000", "000000"};
         Mutant mutant = new Mutant();
         mutant.isMutant(dna);
     }
@@ -71,6 +71,30 @@ class Mutant {
             }
         }
 
+        //iterate in diagonal top-left to bottom-right (\)
+        char[] tmp = new char[dna_len];
+        for(int i=0; i <= max_width - dna_len; i++){
+            for(int j=0; j <= max_height - dna_len; j++){
+                //create diagonal array
+                for(int k=0; k<dna_len; k++){
+                    tmp[k] = matrix[i+k][j+k];
+                }
+                check_horizontal(tmp);
+            } 
+        }
+
+        //iterate in diagonal bottom-left to top-right (/)
+        for(int i=0; i <= max_width - dna_len; i++){
+            for(int j=max_height-1; j >= dna_len-1; j--){
+                //create diagonal array
+
+                for(int k=0; k<dna_len; k++){
+                    tmp[k] = matrix[i+k][j-k];
+                }
+                check_horizontal(tmp);
+            } 
+        }
+
         System.out.println(counter);
         return false;
     }
@@ -101,6 +125,7 @@ class Mutant {
                     return;
                 }
 
+                //move the window to the next chunk
                 i += dna_len -1;
             }
         }
